@@ -6,6 +6,7 @@ import Message from "./Message";
 import ArticleForm from "./ArticleForm";
 import Spinner from "./Spinner";
 import axios from "axios";
+import axiosWithAuth from "../axios";
 
 const articlesUrl = "http://localhost:9000/api/articles";
 const loginUrl = "http://localhost:9000/api/login";
@@ -56,6 +57,19 @@ export default function App() {
   };
 
   const getArticles = () => {
+    axiosWithAuth()
+      .get(articlesUrl)
+      .then((res) => {
+        setArticles(res.data.articles);
+      })
+      .catch((err) => {
+        if (err.response.status == 401) {
+          navigate("/");
+        } else {
+          debugger;
+        }
+      });
+
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch an authenticated request to the proper endpoint.
@@ -111,6 +125,7 @@ export default function App() {
                 <ArticleForm />
                 <Articles
                   articles={articles}
+                  getArticles={getArticles}
                   setCurrentArticleId={setCurrentArticleId}
                 />
               </>
