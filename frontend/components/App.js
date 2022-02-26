@@ -63,7 +63,7 @@ export default function App() {
         setArticles(res.data.articles);
       })
       .catch((err) => {
-        if (err.response.message == 401) {
+        if (err.response.message) {
           navigate("/");
         } else {
           debugger;
