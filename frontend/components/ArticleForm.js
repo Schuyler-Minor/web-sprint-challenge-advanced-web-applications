@@ -6,7 +6,13 @@ const initialFormValues = { title: "", text: "", topic: "" };
 export default function ArticleForm(props) {
   const [values, setValues] = useState(initialFormValues);
   // ✨ where are my props? Destructure them here
-  const { updateArticle, article, postArticle, setCurrentArticleId } = props;
+  const {
+    updateArticle,
+    article,
+    postArticle,
+    setCurrentArticleId,
+    currentArticleId,
+  } = props;
 
   useEffect(() => {
     // ✨ implement
@@ -18,17 +24,17 @@ export default function ArticleForm(props) {
     } else {
       setValues(initialFormValues);
     }
-  }, []);
+  }, [article]);
 
   const onChange = (evt) => {
-    const { id, value } = evt.target;
+    const { article_id, value } = evt.target;
     setValues({ ...values, [id]: value });
   };
 
   const onSubmit = (evt) => {
     evt.preventDefault();
     if (article) {
-      updateArticle(article.articl_id, values);
+      updateArticle(article.article_id, values);
     } else {
       postArticle(values);
     }
@@ -48,7 +54,7 @@ export default function ArticleForm(props) {
     // ✨ fix the JSX: make the heading display either "Edit" or "Create"
     // and replace Function.prototype with the correct function
     <form id="form" onSubmit={onSubmit}>
-      <h2>Create Article</h2>
+      <h2>{!article ? "Create" : "Edit"} Article</h2>
       <input
         maxLength={50}
         onChange={onChange}

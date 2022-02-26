@@ -84,7 +84,7 @@ export default function App() {
     axiosWithAuth()
       .post(articlesUrl, article)
       .then((res) => {
-        setArticles(articles.concat(res.data.article));
+        setArticles(articles.concat(res.data.articles));
       })
       .catch((err) => {
         debugger;
@@ -103,7 +103,7 @@ export default function App() {
       .then((res) => {
         setArticles(
           articles.map((art) => {
-            return (art.article_id = article_id ? res.data.article : art);
+            return art.article_id == article_id ? res.data.article : art;
           })
         );
         setCurrentArticleId();
@@ -162,6 +162,7 @@ export default function App() {
                   updateArticle={updateArticle}
                   postArticle={postArticle}
                   setCurrentArticleId={setCurrentArticleId}
+                  currentArticleId={currentArticleId}
                 />
                 <Articles
                   articles={articles}
