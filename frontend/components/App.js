@@ -81,19 +81,52 @@ export default function App() {
   };
 
   const postArticle = (article) => {
+    axiosWithAuth()
+      .post(articlesUrl, article)
+      .then((res) => {
+        setArticles(articles.concat(res.data.article));
+      })
+      .catch((err) => {
+        debugger;
+      });
     // ✨ implement
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
     // to inspect the response from the server.
   };
 
-  const updateArticle = ({ article_id, article }) => {
+  const updateArticle = (article_id, article) => {
     // ✨ implement
     // You got this!
+    axiosWithAuth()
+      .put(`${articlesUrl}/${article_id}`, article)
+      .then((res) => {
+        setArticles(
+          articles.map((art) => {
+            return (art.article_id = article_id ? res.data.article : art);
+          })
+        );
+        setCurrentArticleId();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const deleteArticle = (article_id) => {
     // ✨ implement
+    axiosWithAuth()
+      .delete(`${articlesUrl}/${article_id}`)
+      .then((res) => {
+        setArticles(
+          articles.filter((art) => {
+            return art.article_id != article_id;
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -122,11 +155,19 @@ export default function App() {
             path="articles"
             element={
               <>
-                <ArticleForm />
+                <ArticleForm
+                  article={articles.find((art) => {
+                    return art.article_id == currentArticleId;
+                  })}
+                  updateArticle={updateArticle}
+                  postArticle={postArticle}
+                  setCurrentArticleId={setCurrentArticleId}
+                />
                 <Articles
                   articles={articles}
                   getArticles={getArticles}
                   setCurrentArticleId={setCurrentArticleId}
+                  deleteArticle={deleteArticle}
                 />
               </>
             }
