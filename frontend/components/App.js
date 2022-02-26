@@ -63,7 +63,7 @@ export default function App() {
         setArticles(res.data.articles);
       })
       .catch((err) => {
-        if (err.response.status == 401) {
+        if (err.response.message == 401) {
           navigate("/");
         } else {
           debugger;
@@ -84,10 +84,10 @@ export default function App() {
     axiosWithAuth()
       .post(articlesUrl, article)
       .then((res) => {
-        setArticles(articles.concat(res.data.articles));
+        setArticles(articles.concat(res.data.article));
       })
       .catch((err) => {
-        debugger;
+        console.log(err);
       });
     // ✨ implement
     // The flow is very similar to the `getArticles` function.
@@ -103,7 +103,7 @@ export default function App() {
       .then((res) => {
         setArticles(
           articles.map((art) => {
-            return art.article_id == article_id ? res.data.article : art;
+            return art.article_id === article_id ? res.data.article : art;
           })
         );
         setCurrentArticleId();
@@ -156,8 +156,8 @@ export default function App() {
             element={
               <>
                 <ArticleForm
-                  article={articles.find((art) => {
-                    return art.article_id == currentArticleId;
+                  currentArticle={articles.find((art) => {
+                    return art.article_id === currentArticleId;
                   })}
                   updateArticle={updateArticle}
                   postArticle={postArticle}
@@ -167,6 +167,7 @@ export default function App() {
                 <Articles
                   articles={articles}
                   getArticles={getArticles}
+                  currentArticleId={currentArticleId}
                   setCurrentArticleId={setCurrentArticleId}
                   deleteArticle={deleteArticle}
                 />
