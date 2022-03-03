@@ -48,7 +48,6 @@ export default function App() {
     axios
       .post(loginUrl, { username, password })
       .then((res) => {
-        console.log(res.data);
         window.localStorage.setItem("token", res.data.token);
         navigate("/articles");
         setMessage(res.data.message);
