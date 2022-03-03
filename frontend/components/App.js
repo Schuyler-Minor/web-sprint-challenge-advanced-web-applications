@@ -50,6 +50,7 @@ export default function App() {
         console.log(res.data);
         window.localStorage.setItem("token", res.data.token);
         navigate("/articles");
+        setMessage(res.data.message);
       })
       .catch((err) => {
         console.log(err);
@@ -61,6 +62,7 @@ export default function App() {
       .get(articlesUrl)
       .then((res) => {
         setArticles(res.data.articles);
+        setMessage(res.data.message);
       })
       .catch((err) => {
         if (err.response.message) {
@@ -85,6 +87,7 @@ export default function App() {
       .post(articlesUrl, article)
       .then((res) => {
         setArticles(articles.concat(res.data.article));
+        setMessage(res.data.message);
       })
       .catch((err) => {
         console.log(err);
@@ -107,6 +110,7 @@ export default function App() {
           })
         );
         setCurrentArticleId();
+        setMessage(res.data.message);
       })
       .catch((err) => {
         console.log(err);
@@ -123,6 +127,7 @@ export default function App() {
             return art.article_id != article_id;
           })
         );
+        setMessage(res.data.message);
       })
       .catch((err) => {
         console.log(err);
